@@ -1,0 +1,360 @@
+#Scripting Geral
+fala_atendente:
+    debug: false
+    type: format
+    format: "<aqua>Bringmar<white>: <&a><text>"
+
+atendente_taverna:
+    debug: false
+    type: assignment
+    actions:
+        on assignment:
+        - trigger name:click state:true
+        - trigger name:proximity state:true radius:10
+        - trigger name:chat
+
+        on click:
+        - ~inventory open d:inventario_taverna  
+        - playsound <n@7.location> sound:ENTITY_VILLAGER_AMBIENT
+ 
+inventory_handler:
+    debug: false
+    type: world
+    events:
+        on player clicks in inventario_taverna:
+    
+        on player drags in inventario_taverna:
+        - determine cancelled
+
+        on player clicks separador in inventario_taverna:
+        - determine cancelled
+
+        on player clicks comidas in inventario_taverna:
+        - inventory open d:aba_comidas
+
+        on player clicks bebidas in inventario_taverna:
+        - inventory open d:aba_bebidas
+    
+comidas_handler:
+    debug: false
+    type: world
+    events:
+        on player clicks separador in aba_comidas:
+        - determine cancelled
+    
+        on player drags separador in aba_comidas:
+        - determine cancelled
+
+        on player drags in aba_comidas:
+        - determine cancelled
+
+        on player clicks galinha_com_mel in aba_comidas:
+        - run checar_lapis instantly def:i@galinha_com_mel delay:2t
+        - determine cancelled
+
+        on player clicks coelho_do_condado in aba_comidas:
+        - run checar_lapis instantly def:i@coelho_do_condado delay:2t
+        - determine cancelled
+
+        on player clicks batata_ana in aba_comidas:
+        - run checar_lapis instantly def:i@batata_ana delay:2t
+        - determine cancelled
+
+        on player clicks volta in aba_comidas:
+        - inventory open d:inventario_taverna
+
+        on player clicks separador in aba_comidas:
+        - determine cancelled
+
+bebidas_handler:
+    debug: false
+    type: world
+    events:
+        on player drags separador in aba_bebidas:
+        - determine cancelled
+
+        on player clicks separador in aba_bebidas:
+        - determine cancelled
+
+        on player drags in aba_bebidas:
+        - determine cancelled
+
+        on player drags in aba_bebidas:
+        - determine cancelled
+
+        on player clicks hidromel in aba_bebidas:
+        - run checar_lapis instantly def:i@hidromel delay:2t
+        - determine cancelled
+
+        on player clicks bebida_elfica in aba_bebidas:
+        - run checar_lapis instantly def:i@bebida_elfica delay:2t
+        - determine cancelled
+        
+        on player clicks volta in aba_bebidas:
+        - inventory open d:inventario_taverna
+
+
+dar_compra:
+    debug: false
+    type: task
+    script:
+    - ~give <player> %1% quantity:1
+
+finalizar:
+    debug: false
+    type: task
+    script:
+    - equip n@7 hand:LAPIS_LAZULI offhand:AIR
+    - ~walk n@7 <n@7.anchor[frente_bau]> lookat:<n@7.anchor[bau1]> auto_range
+    - look <n@7> <n@7.anchor[bau1]> duration:4
+    - ~animate <n@7> ARM_SWING
+    - wait 1
+    - ~animatechest <n@7.anchor[bau1]>
+    - equip n@7 hand:i@galinha_com_mel offhand:AIR
+    - wait 2
+    - ~animatechest <n@7.anchor[bau1]> close 
+    - wait 1
+    - ~walk n@7 <n@7.anchor[balcao_taverna]> auto_range
+
+checar_lapis:
+    debug: false
+    type: task
+    script:
+    - if <player.inventory.contains[LAPIS_LAZULI].quantity[1]> {
+        
+        - take LAPIS_LAZULI from:<player.inventory> quantity:1
+        - wait 1t
+        - ~inventory close
+        - wait 1t
+        - ~run finalizar
+        - give LAPIS_LAZULI quantity:1 to:<n@7.anchor[bau1].inventory>
+        - wait 1
+        - run dar_compra instantly def:%1% delay:1t
+        - playsound <n@7.location> sound:ENTITY_VILLAGER_TRADE
+        - narrate format:fala_atendente "Aprecie sua comida."
+      }
+      else {
+        - inventory close
+        - playsound <n@7.location> sound:ENTITY_VILLAGER_NO
+        - narrate format:fala_atendente "Esta sem lapis lazuli, nao faco fiado."
+
+      }
+
+#Opções da Taverna (Inventários)
+inventario_taverna:
+    debug: false
+    type: inventory
+    title: Escolha sua comida
+    size: 27
+    slots:
+    - "[i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador]"
+    - "[i@separador] [i@separador] [i@separador] [i@comidas] [i@separador] [i@bebidas] [i@separador] [i@separador] [i@separador]"
+    - "[i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador]"
+
+aba_comidas:
+    debug: false
+    type: inventory
+    title: Comidas
+    size: 27
+    slots:
+    - "[i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador]"
+    - "[i@separador] [i@separador] [i@galinha_com_mel] [i@separador] [i@coelho_do_condado] [i@separador] [i@batata_ana] [i@separador] [i@separador]"
+    - "[i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@volta]"
+
+aba_bebidas:
+    debug: false
+    type: inventory
+    title: Bebidas
+    size: 27
+    slots:
+    - "[i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador]"
+    - "[i@separador] [i@separador] [i@hidromel] [i@separador] [i@separador] [i@separador] [i@bebida_elfica] [i@separador] [i@separador]"
+    - "[i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@separador] [i@volta]"
+
+#Definições dos alimentos (itens)
+hidromel:
+    #SPEED,true,false|SPEED,2,200,false,true,true
+    #Effect,Upgraded,Extended(,Color)|Type,Amplifier,Duration,Ambient,Particles(,Icon)|... 
+    #Type,Upgraded,Extended(,Color)|Effect,Amplifier,Duration,Ambient,Particles(,Icon)|... (With REGEN)
+#i@potion[potion_effects=li@WATER,false,false,yellow|CONFUSION,3,400,false,false,false|BLINDNESS,2,350,false,false,false|REGENERATION,4,200,false,false,false]    
+    debug: false
+    type: item
+
+    material:  i@potion[potion_effects=li@WATER,false,false,yellow|CONFUSION,3,100,false,false,false|REGENERATION,4,150,false,false,false]
+    display name: <green>Hidromel <gold>(<blue>1 LP<gold>)
+    lore: 
+    - <gold>Beba para sentir 
+    - <gold>um pouco da potencia ana !
+
+    #RESISTENCIA BATATA
+    #COELHO PULO
+    #FRANGO SPRINT
+
+galinha_com_mel:
+    debug: false
+    type: item
+    material: i@COOKED_CHICKEN
+    display name: <green>Galinha com mel <gold>(<blue>1 LP<gold>)
+
+    lore:
+    - <gold>Galinha assada com manteiga
+    - <gold>passada no molho de mel com
+    - <gold>a melhor cidra ana.
+    
+    recipes:    
+        1:
+            # The type can be: shaped, shapeless, stonecutting, furnace, blast, smoker, or campfire.
+            type: shaped
+            output_quantity: 1
+            # You must specify the input for the recipe. The below is a sample of a 3x3 shaped recipe. Other recipe types have a different format.
+            # You are allowed to have non-3x3 shapes (can be any value 1-3 x 1-3, so for example 1x3, 2x1, and 2x2 are fine).
+            # For an empty slot, use "air".
+            # By default, items require an exact match. For a material-based match, use the format "material:MaterialNameHere" like "material:stick".
+            input:
+            - i@SUGAR|i@SUGAR|i@SUGAR
+            - i@SUGAR|i@COOKED_CHICKEN|i@SUGAR
+            - i@SUGAR|i@SUGAR|i@SUGAR
+
+galinha_com_mel_efeito:
+    debug: false
+    type: world
+    events:
+        on player consumes galinha_com_mel:
+        - cast speed d:8 p:2 <player>
+
+coelho_do_condado_total:
+    debug: false
+    type: item
+    material: i@COOKED_RABBIT
+    display name: <green>Coelho do Condado <gold>(<blue>5 LP<gold>)
+
+    lore:
+    - <gold>Coelho regado a gordura de javali
+    - <gold>com vinho branco elfico, acompanhado
+    - <gold>de uma porcao de batatas e uma bela ana.
+    
+
+coelho_do_condado:
+    debug: false
+    type: item
+    material: i@COOKED_RABBIT
+    display name: <green>Coelho do Condado <gold>(<blue>1 LP<gold>)
+
+    lore:
+    - <gold>Coelho regado a gordura de javali
+    - <gold>com vinho branco elfico.
+
+    recipes:    
+        1:
+            # The type can be: shaped, shapeless, stonecutting, furnace, blast, smoker, or campfire.
+            type: shapeless
+            input: i@VINHO_ELFICO|i@PORKCHOP|i@COOKED_RABBIT
+
+coelho_do_condado_efeito:
+    debug: false
+    type: world
+    events:
+        on player consumes coelho_do_condado:
+        - cast jump d:8 p:1 <player>
+
+batata_ana:
+    debug: false
+    type: item
+    material: i@BAKED_POTATO
+    display name: <green>Batata ana <gold>(<blue>1 LP<gold>)
+
+    lore:
+    - <gold>Batata passada na gordura de javali.
+
+batata_ana_efeito:
+    debug: false
+    type: world
+    events:
+        on player consumes batata_ana:
+        - cast DAMAGE_RESISTANCE d:8 p:2 <player>
+
+bebida_elfica:
+    debug: false
+    type: item
+    material: i@MILK_BUCKET
+    display name: <green>Bebida Elfica <gold>(<blue>1 LP<gold>)
+
+    lore:
+    - <gold>Como diz o ditado...
+    - <white>"Quem nao aguenta <white> bebe leitinho"<gold>.
+    - <dark_gray> --------------------------
+    - <dark_gray>Bebida comumente consumida por 
+    - <dark_gray>elfos, fadas e criancas.
+
+
+    recipes:    
+        1:
+            type: shapeless
+            output_quantity: 1
+            input: i@MILK_BUCKET|i@BROWN_MUSHROOM|i@ARROW
+
+#bebida_elfica_eventos:
+#    type: world
+#    events:
+#    - on i@bebida_elfica recipe formed:
+
+
+
+vinho_elfico:
+    debug: false
+    type: item
+    material: i@potion[potion_effects=li@WATER,false,false,red|SLOW,2,100,false,false,false|REGENERATION,4,150,false,false,false]
+    display name: <green>Vinho Elfico <gold>(<blue>1 LP<gold>)
+
+    lore:
+    - <gold>Um vinho fino feito
+    - <gold>com os melhores frutos da floresta.
+
+
+    recipes:    
+        1:
+            type: shaped 
+            output_quantity: 1
+            input:
+            - i@SWEET_BERRIES|i@SWEET_BERRIES|i@SWEET_BERRIES
+            - i@SWEET_BERRIES|i@bebida_elfica|i@SWEET_BERRIES
+            - i@SWEET_BERRIES|i@SWEET_BERRIES|i@SWEET_BERRIES
+    
+comidas:
+    debug: false
+    type: item
+    material: i@COOKED_CHICKEN
+    display name: <yellow>Comidas
+
+    lore:
+    - <light_purple>-> <aqua>Galinha com Mel <gold>(<blue>1 LP<gold>)
+    - <light_purple>-> <aqua>Coelho do Condado <gold>(<blue>1 LP<gold>)
+    - <light_purple>-> <aqua>Batata Ana <gold>(<blue>1 LP<gold>)
+
+bebidas:
+    debug: false
+    type: item
+    material: i@MILK_BUCKET
+    display name: <yellow>Bebidas
+
+    lore:
+    - <light_purple>-> <aqua>Hidromel <gold>(<blue>1 LP<gold>)
+    - <light_purple>-> <aqua>Bebida Elfica <gold>(<blue>1 LP<gold>)
+
+volta:
+    debug: false
+    type: item
+    material: i@BOOK
+    display_name: <white>Voltar
+
+    lore:
+    - Volta para menu inicial
+
+separador:
+    debug: false
+    type: item
+    material: i@BLACK_STAINED_GLASS_PANE
+    display_name: <black>Separador
+
+    lore:
+    - <green>Continue Comprando
