@@ -1,0 +1,18 @@
+npc:
+  class:
+    '0':
+      name: Sentinela
+      skin: lord__dark
+      description: Vamos defender seu povo !!
+    '1':
+      name: Vendedor
+      skin: ___luffy___
+      description: Vender vou eu, meus lucros são seus?!
+    '2':
+      name: Lutador
+      skin: abja
+      description: Luto por você, por um preço!
+    '3':
+      name: Pescador
+      skin: fxitz_xm
+      description: Hoje o rio está pra peixe...

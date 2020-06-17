@@ -1,0 +1,28 @@
+races:
+    Dwarf:
+        skin:
+        toast_icon: diamond_axe
+        # toast_text: "aaaaaaaaaaaaaaaaaaaaa"
+        toast_text: Pela Lava. Urra !"
+    Dwelf:
+        skin:
+        toast_icon: SKELETON_SKULL
+        toast_text: "Ehhh, Por que ?"
+    Elf:
+        skin:
+        toast_icon: DARK_OAK_SAPLING
+        toast_text: "Seguimos a crafting table"
+    Human:
+        skin:
+        toast_icon: ENCHANTED_BOOK
+        toast_text: "Rumamos ao nosso crescimento"
+    Undead:
+        skin:
+        toast_icon: ZOMBIE_HEAD
+        toast_text: "Eat...Brains ?"
+    Zora:
+        skin:
+        toast_icon: TRIDENT
+        toast_text: "Conhecimento acima de tudo"
+
+

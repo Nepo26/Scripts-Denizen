@@ -1,0 +1,22 @@
+portals:
+  portal_3_second: portal_3_first
+  portal_4_second: portal_4_first
+  portal_5_second: portal_5_first
+  portal_6_second: portal_6_first
+  portal_6_first: portal_6_second
+  portal_2_first: portal_2_second
+  portal_8_first: portal_8_second
+  portal_7_first: portal_7_second
+  portal_3_first: portal_3_second
+  portal_9_first: portal_9_second
+  portal_4_first: portal_4_second
+  last_id: '10'
+  portal_8_second: portal_8_first
+  portal_7_second: portal_7_first
+  portal_9_second: portal_9_first
+  portal_10_first: portal_10_second
+  portal_1_second: portal_1_first
+  portal_2_second: portal_2_first
+  portal_1_first: portal_1_second
+  portal_10_second: portal_10_first
+  portal_5_first: portal_5_second
