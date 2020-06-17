@@ -3,4 +3,4 @@ Scripts de alteração de gameplay, adição de itens entre outras coisa para o 
 - [Documentação do Denizen](https://one.denizenscript.com/denizen/logs)
 
 ## Exemplo do script de criação de NPCs funcionando
-![NPC MENU](https://raw.githubusercontent.com/Nepo26/Scripts-Denizen/master/thumb.png)
+[![NPC MENU](https://raw.githubusercontent.com/Nepo26/Scripts-Denizen/master/thumb.png)](https://streamable.com/olype8#)
